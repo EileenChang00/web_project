@@ -71,7 +71,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try {
 
           Connection conn = dataSource.getConnection();
-          String sql = "select employee_id, employee_name, employee_dep from employee where id = ?";
+          String sql = "select employee_id, employee_name, employee_dep from employee where employee_id = ?";
           PreparedStatement stmt = conn.prepareStatement(sql);
     
           stmt.setLong(1, id);
@@ -91,12 +91,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      }
      
     public int delete(Long id) {
-        
+
         int result = 0;    
         try {
       
           Connection conn = dataSource.getConnection();
-          String sql = "delete from employee where id =?";
+          String sql = "delete from employee where employee_id =?";
           PreparedStatement stmt = conn.prepareStatement(sql); 
           stmt.setLong(1, id);   
           result = stmt.executeUpdate();
