@@ -37,29 +37,20 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try {
 
             Connection conn = dataSource.getConnection();
-
             String sql = "select employee_id, employee_name, employee_dep from employee";
-
             PreparedStatement stmt = conn.prepareStatement(sql);
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-
                 employee.add(getEmployee(rs));
-
             }
 
         } catch (Exception e) {
 
             // something wrong
-
             System.out.println(e);
-
         }
-
         return employee;
-
     }
 
     public Employee getEmployee(ResultSet rs) throws SQLException {
@@ -73,5 +64,50 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 rs.getString("employee_dep"));
 
     }
+
+    public Employee findOne(Long id) {
+
+        Employee employee = new Employee();
+        try {
+
+          Connection conn = dataSource.getConnection();
+          String sql = "select employee_id, employee_name, employee_dep from employee where id = ?";
+          PreparedStatement stmt = conn.prepareStatement(sql);
+    
+          stmt.setLong(1, id);
+          ResultSet rs = stmt.executeQuery();     
+    
+          if (rs.next()) {
+            employee = getEmployee(rs);
+          }
+    
+        } catch(Exception e) {
+
+          //something wrong
+          System.out.println(e);
+    
+        }
+        return employee;
+     }
+     
+    public int delete(Long id) {
+        
+        int result = 0;    
+        try {
+      
+          Connection conn = dataSource.getConnection();
+          String sql = "delete from employee where id =?";
+          PreparedStatement stmt = conn.prepareStatement(sql); 
+          stmt.setLong(1, id);   
+          result = stmt.executeUpdate();
+
+        } catch(Exception e) {
+    
+          //something wrong
+          System.out.println(e);
+      
+        }
+        return result;
+       }
 
 }
