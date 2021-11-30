@@ -41,8 +41,5 @@ public class Employee {
     public Long getId(){
         return id;
     }
-    public void setId(Long Id, Employee employee){
-        this.id = id;
-    }
 
 }
