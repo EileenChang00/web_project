@@ -38,7 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
             Connection conn = dataSource.getConnection();
 
-            String sql = "select employee_id, employee_name, employee_dep from employee";
+            String sql = "select employee_id, employee_name, employee_dep, id from employee";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -70,8 +70,55 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
                 rs.getString("employee_name"),
 
-                rs.getString("employee_dep"));
+                rs.getString("employee_dep"),
+
+                rs.getLong("id"));
 
     }
+
+    public int insert(Employee employee) {
+
+        int result = 0;
+        try {
+          Connection conn = dataSource.getConnection();
+          String sql = "insert into employee (employee_id, employee_name, employee_dep) values(?, ?, ?)";
+      
+          PreparedStatement stmt = conn.prepareStatement(sql);
+      
+          
+          stmt.setLong(1, employee.getEmployee_id());
+          stmt.setString(2, employee.getEmployee_name());
+          stmt.setString(3, employee.getEmployee_dep());
+      
+          result = stmt.executeUpdate();
+      
+        } catch(Exception e) {
+          //something wrong
+          System.out.println(e);
+        }
+        return result;
+      }
+      
+      public int update(Employee employee) {
+      
+        int result = 0;
+        try {
+          Connection conn = dataSource.getConnection();
+          String sql = "update employee set employee_id=?, employee_name=?, employee_dep=? where id =?";
+      
+          PreparedStatement stmt = conn.prepareStatement(sql);
+          stmt.setLong(1, employee.getEmployee_id());
+          stmt.setString(2, employee.getEmployee_name());
+          stmt.setString(3, employee.getEmployee_dep());
+          stmt.setLong(4, employee.getId());
+      
+          result = stmt.executeUpdate();
+      
+        } catch(Exception e) {
+          //something wrong
+          System.out.println(e);
+        }
+        return result;
+      }
 
 }

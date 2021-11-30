@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.dao.EmployeeDAO;
 
@@ -24,10 +27,20 @@ public class EmployeeController {
 
     @GetMapping(value = "/employee")
 
-    public List<Employee> retrieveEmployee() throws SQLException {
+    public List<Employee> retrieveOneEmployees() throws SQLException {
 
         return dao.findAll();
 
+    }
+
+    @PostMapping(value = "/employee")
+    public void processFormCreate(@RequestBody Employee employee) throws SQLException {
+        dao.insert(employee);
+
+    }
+    @PutMapping(value = "/employee")
+    public void processFormUpdate(@RequestBody Employee employee) throws SQLException {
+        dao.update(employee);
     }
 
 }
