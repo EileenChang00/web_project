@@ -69,4 +69,29 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
                 rs.getTimestamp("punch_out"));
 
     }
+
+    public EmployeePunch findOne(Long employee_id) {
+
+        EmployeePunch employeePunch = new EmployeePunch();
+        try {
+
+            Connection conn = dataSource.getConnection();
+            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out from employee, punch where employee.employee_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setLong(1, employee_id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                employeePunch = getEmployeePunch(rs);
+            }
+
+        } catch (Exception e) {
+
+            // something wrong
+            System.out.println(e);
+
+        }
+        return employeePunch;
+    }
 }
