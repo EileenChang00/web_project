@@ -7,5 +7,7 @@ import com.example.demo.entity.EmployeePunch;
 public interface EmployeePunchDAO {
     public List<EmployeePunch> findAll();
 
-    public EmployeePunch findOne(Long employee_id);
+    public EmployeePunch findId(Long employee_id);
+
+    public EmployeePunch findName(String employee_name);
 }
