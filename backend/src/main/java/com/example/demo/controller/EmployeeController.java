@@ -33,19 +33,21 @@ public class EmployeeController {
         return dao.findAll();
 
     }
-    @GetMapping(value = {"/employee/{id}"})
 
-    public Employee retrieveOneEmployee(@PathVariable("id") Long id) throws SQLException{
+    @GetMapping(value = { "/employee/{employee_id}" })
 
-       return dao.findOne(id);
+    public Employee retrieveOneEmployee(@PathVariable("employee_id") Long employee_id) throws SQLException {
+
+        return dao.findOne(employee_id);
 
     }
+
     @DeleteMapping(value = "/employee/{id}")
-   
+
     public void deleteEmployee(@PathVariable("id") Long id) {
-   
-       dao.delete(id);
-   
+
+        dao.delete(id);
+
     }
 
     @PostMapping(value = "/employee")
@@ -53,6 +55,7 @@ public class EmployeeController {
         dao.insert(employee);
 
     }
+
     @PutMapping(value = "/employee")
     public void processFormUpdate(@RequestBody Employee employee) throws SQLException {
         dao.update(employee);

@@ -38,7 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
       Connection conn = dataSource.getConnection();
 
-      String sql = "select employee_id, employee_name, employee_dep, id from employee";
+      String sql = "select employee_id, employee_name, employee_dep, id, employee_password from employee";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
       ResultSet rs = stmt.executeQuery();
@@ -65,6 +65,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
         rs.getString("employee_dep"),
 
+        rs.getString("employee_password"),
+
         rs.getLong("id"));
 
   }
@@ -74,13 +76,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     int result = 0;
     try {
       Connection conn = dataSource.getConnection();
-      String sql = "insert into employee (employee_id, employee_name, employee_dep) values(?, ?, ?)";
+      String sql = "insert into employee (employee_id, employee_name, employee_dep, employee_pasword) values(?, ?, ?, ?)";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setLong(1, employee.getEmployee_id());
       stmt.setString(2, employee.getEmployee_name());
       stmt.setString(3, employee.getEmployee_dep());
+      stmt.setString(4, employee.getEmployee_password());
 
       result = stmt.executeUpdate();
 
@@ -96,13 +99,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     int result = 0;
     try {
       Connection conn = dataSource.getConnection();
-      String sql = "update employee set employee_id=?, employee_name=?, employee_dep=? where id =?";
+      String sql = "update employee set employee_id=?, employee_name=?, employee_dep=?, employee_password=? where id =?";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
       stmt.setLong(1, employee.getEmployee_id());
       stmt.setString(2, employee.getEmployee_name());
       stmt.setString(3, employee.getEmployee_dep());
-      stmt.setLong(4, employee.getId());
+      stmt.setString(4, employee.getEmployee_password());
+      stmt.setLong(5, employee.getId());
 
       result = stmt.executeUpdate();
 
@@ -113,16 +117,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     return result;
   }
 
-  public Employee findOne(Long id) {
+  public Employee findOne(Long employee_id) {
 
     Employee employee = new Employee();
     try {
 
       Connection conn = dataSource.getConnection();
-      String sql = "select employee_id, employee_name, employee_dep, id from employee where id = ?";
+      String sql = "select employee_id, employee_name, employee_dep, id, employee_password from employee where employee_id = ?";
       PreparedStatement stmt = conn.prepareStatement(sql);
 
-      stmt.setLong(1, id);
+      stmt.setLong(1, employee_id);
       ResultSet rs = stmt.executeQuery();
 
       if (rs.next()) {

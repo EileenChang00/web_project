@@ -7,7 +7,9 @@ import com.example.demo.entity.Employee;
 public interface EmployeeDAO {
 
     public List<Employee> findAll();
-    public Employee findOne(Long id);
+
+    public Employee findOne(Long employee_id);
+
     public int delete(Long id);
 
     public int insert(Employee employee);
