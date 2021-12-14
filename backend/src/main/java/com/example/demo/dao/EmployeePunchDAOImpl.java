@@ -53,9 +53,9 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
         return employeePunch;
     }
 
-    public EmployeePunch findId(Long employee_id) {
+    public List<EmployeePunch> findId(Long employee_id) {
 
-        EmployeePunch employeePunch = new EmployeePunch();
+        List<EmployeePunch> employeePunch = new ArrayList<EmployeePunch>();
         try {
 
             Connection conn = dataSource.getConnection();
@@ -65,8 +65,8 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
             stmt.setLong(1, employee_id);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                employeePunch = getEmployeePunch(rs);
+            while (rs.next()) {
+                employeePunch.add(getEmployeePunch(rs));
             }
 
         } catch (Exception e) {
@@ -78,9 +78,9 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
         return employeePunch;
     }
 
-    public EmployeePunch findName(String employee_name) {
+    public List<EmployeePunch> findName(String employee_name) {
 
-        EmployeePunch employeePunch = new EmployeePunch();
+        List<EmployeePunch> employeePunch = new ArrayList<EmployeePunch>();
         try {
 
             Connection conn = dataSource.getConnection();
@@ -91,8 +91,8 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                employeePunch = getEmployeePunch(rs);
+            while (rs.next()) {
+                employeePunch.add(getEmployeePunch(rs));
             }
 
         } catch (Exception e) {

@@ -27,7 +27,7 @@ public class EmployeePunchController {
 
     @GetMapping(value = { "/search/id/{employee_id}" })
 
-    public EmployeePunch retrieveOneEmployee(@PathVariable("employee_id") Long employee_id) throws SQLException {
+    public List<EmployeePunch> retrieveOneEmployee(@PathVariable("employee_id") Long employee_id) throws SQLException {
 
         return dao.findId(employee_id);
 
@@ -35,7 +35,8 @@ public class EmployeePunchController {
 
     @GetMapping(value = { "/search/name/{employee_name}" })
 
-    public EmployeePunch retrieveOneEmployee(@PathVariable("employee_name") String employee_name) throws SQLException {
+    public List<EmployeePunch> retrieveOneEmployee(@PathVariable("employee_name") String employee_name)
+            throws SQLException {
 
         return dao.findName(employee_name);
 
