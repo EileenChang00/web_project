@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-
 import java.util.concurrent.TimeUnit;
 
 public class EmployeePunch {
@@ -93,5 +92,13 @@ public class EmployeePunch {
         long time_diff = time.convert(diff, TimeUnit.MILLISECONDS);
 
         return time_diff;
+    }
+
+    public String getMonth_sep() {
+
+        SimpleDateFormat timeformat = new SimpleDateFormat("MM");
+        String month = timeformat.format(this.in);
+
+        return month;
     }
 }

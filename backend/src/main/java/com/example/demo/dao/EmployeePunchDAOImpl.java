@@ -84,10 +84,11 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
         try {
 
             Connection conn = dataSource.getConnection();
-            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out from employee left join punch on punch.employee_id=employee.employee_id where employee.employee_name = ?;";
+            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out from employee left join punch on punch.employee_id=employee.employee_id where employee.employee_name like ?;";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, employee_name);
+            String name = "%" + employee_name + "%";
+            stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
