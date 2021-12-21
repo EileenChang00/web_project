@@ -61,4 +61,11 @@ public class PunchController {
         dao.update(punch);
     }
 
+    @GetMapping(value = { "/search/month/{punchMonth}" })
+
+    public List<Punch> retrieveOnePunch(@PathVariable("punchMonth") int punchMonth) throws SQLException {
+
+        return dao.findMonth(punchMonth);
+
+    }
 }

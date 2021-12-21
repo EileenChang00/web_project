@@ -16,4 +16,5 @@ public interface PunchDAO {
 
     public int update(Punch employee);
 
+    public List<Punch> findMonth(int punchMonth);
 }

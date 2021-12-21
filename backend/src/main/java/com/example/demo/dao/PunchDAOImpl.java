@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.sql.DataSource;
 
@@ -24,146 +26,173 @@ import com.example.demo.entity.Punch;
 
 public class PunchDAOImpl implements PunchDAO {
 
-    @Autowired
+  @Autowired
 
-    private DataSource dataSource;
+  private DataSource dataSource;
 
-    // jdbc
+  // jdbc
 
-    public List<Punch> findAll() {
+  public List<Punch> findAll() {
 
-        List<Punch> punch = new ArrayList<Punch>();
+    List<Punch> punch = new ArrayList<Punch>();
 
-        try {
+    try {
 
-            Connection conn = dataSource.getConnection();
+      Connection conn = dataSource.getConnection();
 
-            String sql = "select punch_id, punch_in, punch_out, employee_id from punch";
+      String sql = "select punch_id, punch_in, punch_out, employee_id from punch";
 
-            PreparedStatement stmt = conn.prepareStatement(sql);
+      PreparedStatement stmt = conn.prepareStatement(sql);
 
-            ResultSet rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
+      while (rs.next()) {
 
-                punch.add(getPunch(rs));
+        punch.add(getPunch(rs));
 
-            }
+      }
 
-        } catch (Exception e) {
+    } catch (Exception e) {
 
-            // something wrong
+      // something wrong
 
-            System.out.println(e);
-
-        }
-
-        return punch;
+      System.out.println(e);
 
     }
 
-    public Punch getPunch(ResultSet rs) throws SQLException {
+    return punch;
 
-        return new Punch(
+  }
 
-                rs.getLong("punch_id"),
+  public Punch getPunch(ResultSet rs) throws SQLException {
 
-                rs.getTimestamp("punch_in"),
+    return new Punch(
 
-                rs.getTimestamp("punch_out"),
-                
-                rs.getLong("employee_id"));
+        rs.getLong("punch_id"),
+
+        rs.getTimestamp("punch_in"),
+
+        rs.getTimestamp("punch_out"),
+
+        rs.getLong("employee_id"));
+
+  }
+
+  public int insert(Punch punch) {
+
+    int result = 0;
+    try {
+      Connection conn = dataSource.getConnection();
+      String sql = "insert into punch (punch_id, punch_in, punch_out, employee_id) values(?, ?, ?, ?)";
+
+      PreparedStatement stmt = conn.prepareStatement(sql);
+
+      stmt.setLong(1, punch.getPunch_id());
+      stmt.setTimestamp(2, punch.getPunch_in());
+      stmt.setTimestamp(3, punch.getPunch_out());
+      stmt.setLong(4, punch.getEmployee_id());
+
+      result = stmt.executeUpdate();
+
+    } catch (Exception e) {
+      // something wrong
+      System.out.println(e);
+    }
+    return result;
+  }
+
+  public int update(Punch punch) {
+
+    int result = 0;
+    try {
+      Connection conn = dataSource.getConnection();
+      String sql = "update punch set punch_id=?, punch_in=?, punch_out=? where employee_id =?";
+
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      stmt.setLong(1, punch.getPunch_id());
+      stmt.setTimestamp(2, punch.getPunch_in());
+      stmt.setTimestamp(3, punch.getPunch_out());
+      stmt.setLong(4, punch.getEmployee_id());
+
+      result = stmt.executeUpdate();
+
+    } catch (Exception e) {
+      // something wrong
+      System.out.println(e);
+    }
+    return result;
+  }
+
+  public Punch findOne(Long employee_id) {
+
+    Punch punch = new Punch();
+    try {
+
+      Connection conn = dataSource.getConnection();
+      String sql = "select punch_id, punch_in, punch_out, employee_id from punch where employee_id = ?";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+
+      stmt.setLong(1, employee_id);
+      ResultSet rs = stmt.executeQuery();
+
+      if (rs.next()) {
+        punch = getPunch(rs);
+      }
+
+    } catch (Exception e) {
+
+      // something wrong
+      System.out.println(e);
 
     }
+    return punch;
+  }
 
-    public int insert(Punch punch) {
+  public int delete(Long id) {
 
-        int result = 0;
-        try {
-          Connection conn = dataSource.getConnection();
-          String sql = "insert into punch (punch_id, punch_in, punch_out, employee_id) values(?, ?, ?, ?)";
-    
-          PreparedStatement stmt = conn.prepareStatement(sql);
-    
-          stmt.setLong(1, punch.getPunch_id());
-          stmt.setTimestamp(2, punch.getPunch_in());
-          stmt.setTimestamp(3, punch.getPunch_out());
-          stmt.setLong(4, punch.getEmployee_id());
-    
-          result = stmt.executeUpdate();
-    
-        } catch (Exception e) {
-          // something wrong
-          System.out.println(e);
-        }
-        return result;
+    int result = 0;
+    try {
+
+      Connection conn = dataSource.getConnection();
+      String sql = "delete from punch where employee_id =?";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      stmt.setLong(1, id);
+      result = stmt.executeUpdate();
+
+    } catch (Exception e) {
+
+      // something wrong
+      System.out.println(e);
+
+    }
+    return result;
+  }
+
+  public List<Punch> findMonth(int punchMonth) {
+
+    List<Punch> punch = new ArrayList<Punch>();
+    try {
+
+      Connection conn = dataSource.getConnection();
+      String sql = "select * from punch where DATE_FORMAT(punch_in,'%Y%m') = ?;";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy");
+      String yearmonth = dtf.format(LocalDateTime.now()) + punchMonth;
+      stmt.setString(1, yearmonth);
+      ResultSet rs = stmt.executeQuery();
+
+      while (rs.next()) {
+        punch.add(getPunch(rs));
       }
-    
-      public int update(Punch punch) {
-    
-        int result = 0;
-        try {
-          Connection conn = dataSource.getConnection();
-          String sql = "update punch set punch_id=?, punch_in=?, punch_out=? where employee_id =?";
-    
-          PreparedStatement stmt = conn.prepareStatement(sql);
-          stmt.setLong(1, punch.getPunch_id());
-          stmt.setTimestamp(2, punch.getPunch_in());
-          stmt.setTimestamp(3, punch.getPunch_out());
-          stmt.setLong(4, punch.getEmployee_id());
-    
-          result = stmt.executeUpdate();
-    
-        } catch (Exception e) {
-          // something wrong
-          System.out.println(e);
-        }
-        return result;
-      }
-    
-      public Punch findOne(Long employee_id) {
-    
-        Punch punch = new Punch();
-        try {
-    
-          Connection conn = dataSource.getConnection();
-          String sql = "select punch_id, punch_in, punch_out, employee_id from punch where employee_id = ?";
-          PreparedStatement stmt = conn.prepareStatement(sql);
-    
-          stmt.setLong(1, employee_id);
-          ResultSet rs = stmt.executeQuery();
-    
-          if (rs.next()) {
-            punch = getPunch(rs);
-          }
-    
-        } catch (Exception e) {
-    
-          // something wrong
-          System.out.println(e);
-    
-        }
-        return punch;
-      }
-    
-      public int delete(Long id) {
-    
-        int result = 0;
-        try {
-    
-          Connection conn = dataSource.getConnection();
-          String sql = "delete from punch where employee_id =?";
-          PreparedStatement stmt = conn.prepareStatement(sql);
-          stmt.setLong(1, id);
-          result = stmt.executeUpdate();
-    
-        } catch (Exception e) {
-    
-          // something wrong
-          System.out.println(e);
-    
-        }
-        return result;
-      }
+
+    } catch (Exception e) {
+
+      // something wrong
+      System.out.println(e);
+
+    }
+    return punch;
+  }
 
 }
