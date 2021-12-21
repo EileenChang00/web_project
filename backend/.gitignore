@@ -6,6 +6,7 @@
 
 # 忽略 config 目錄下的 database.yml 檔案
 target/
+backend/target
 .settings
 src/main/resources/application.properties
 

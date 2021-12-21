@@ -1,66 +1,71 @@
 package com.example.demo.entity;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 public class Punch {
 
-    private Long id;
+    private Long punch_id;
 
-    private Timestamp in;
+    private Timestamp punch_in;
 
-    private Timestamp out;
+    private Timestamp punch_out;
+
+    private Long employee_id;
 
     public Punch() {
 
     }
 
-    public Punch(Long id, Timestamp in, Timestamp out) {
-        this.id = id;
+    public Punch(Long punch_id, Timestamp punch_in, Timestamp punch_out, Long employee_id) {
+        this.punch_id = punch_id;
 
-        this.in = in;
+        this.punch_in = punch_in;
 
-        this.out = out;
+        this.punch_out = punch_out;
 
-    }
-
-    public Long getId() {
-
-        return id;
+        this.employee_id = employee_id;
 
     }
 
-    public void setId(Long id) {
+    public Long getPunch_id() {
 
-        this.id = id;
-
-    }
-
-    public String getIn() {
-
-        SimpleDateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String inTime = timeformat.format(in);
-
-        return inTime;
+        return punch_id;
 
     }
 
-    public void setIn(Timestamp in) {
+    public void setPunch_id(Long punch_id) {
 
-        this.in = in;
+        this.punch_id = punch_id;
 
     }
 
-    public String getOut() {
+    public Timestamp getPunch_in() {
 
-        SimpleDateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String outTime = timeformat.format(out);
+        return punch_in;
 
-        return outTime;
     }
 
-    public void setOut(Timestamp out) {
+    public void setPunch_in(Timestamp punch_in) {
 
-        this.out = out;
+        this.punch_in = punch_in;
+
+    }
+
+    public Timestamp getPunch_out() {
+
+        return punch_out;
+    }
+
+    public void setPunch_out(Timestamp punch_out) {
+
+        this.punch_out = punch_out;
+    }
+
+    public Long getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(Long employee_id) {
+        this.employee_id = employee_id;
     }
 }
