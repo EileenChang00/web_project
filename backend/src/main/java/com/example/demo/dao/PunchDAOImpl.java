@@ -107,13 +107,12 @@ public class PunchDAOImpl implements PunchDAO {
     int result = 0;
     try {
       Connection conn = dataSource.getConnection();
-      String sql = "update punch set punch_id=?, punch_in=?, punch_out=? where employee_id =?";
+      String sql = "update punch set punch_in=?, punch_out=? where employee_id =?";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
-      stmt.setLong(1, punch.getPunch_id());
-      stmt.setTimestamp(2, punch.getPunch_in());
-      stmt.setTimestamp(3, punch.getPunch_out());
-      stmt.setLong(4, punch.getEmployee_id());
+      stmt.setTimestamp(1, punch.getPunch_in());
+      stmt.setTimestamp(2, punch.getPunch_out());
+      stmt.setLong(3, punch.getEmployee_id());
 
       result = stmt.executeUpdate();
 
