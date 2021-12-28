@@ -16,16 +16,20 @@ public class EmployeePunch {
 
     private Timestamp out;
 
+    private String punch_state;
+
     public EmployeePunch() {
 
     }
 
-    public EmployeePunch(Long employee_id, String employee_name, String employee_dep, Timestamp in, Timestamp out) {
+    public EmployeePunch(Long employee_id, String employee_name, String employee_dep, Timestamp in, Timestamp out,
+            String punch_state) {
         this.employee_id = employee_id;
         this.employee_name = employee_name;
         this.employee_dep = employee_dep;
         this.in = in;
         this.out = out;
+        this.punch_state = punch_state;
     }
 
     public Long getEmployee_id() {
@@ -100,5 +104,13 @@ public class EmployeePunch {
         String month = timeformat.format(this.in);
 
         return month;
+    }
+
+    public String getPunch_state() {
+        return punch_state;
+    }
+
+    public void setPunch_state(String punch_state) {
+        this.punch_state = punch_state;
     }
 }

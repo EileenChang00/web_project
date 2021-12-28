@@ -36,7 +36,7 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
 
             Connection conn = dataSource.getConnection();
 
-            String sql = "select employee.employee_id, employee_name, employee_dep, punch_in, punch_out from employee, punch where employee.employee_id = punch.employee_id";
+            String sql = "select employee.employee_id, employee_name, employee_dep, punch_in, punch_out, punch_state from employee, punch where employee.employee_id = punch.employee_id";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -59,7 +59,7 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
         try {
 
             Connection conn = dataSource.getConnection();
-            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out from employee left join punch on punch.employee_id=employee.employee_id where punch.employee_id = ?;";
+            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out, punch_state from employee left join punch on punch.employee_id=employee.employee_id where punch.employee_id = ?;";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setLong(1, employee_id);
@@ -84,7 +84,7 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
         try {
 
             Connection conn = dataSource.getConnection();
-            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out from employee left join punch on punch.employee_id=employee.employee_id where employee.employee_name like ?;";
+            String sql = "select employee.employee_id, employee_name, employee_dep, id, punch_in, punch_out, punch_state from employee left join punch on punch.employee_id=employee.employee_id where employee.employee_name like ?;";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             String name = "%" + employee_name + "%";
@@ -116,7 +116,9 @@ public class EmployeePunchDAOImpl implements EmployeePunchDAO {
 
                 rs.getTimestamp("punch_in"),
 
-                rs.getTimestamp("punch_out"));
+                rs.getTimestamp("punch_out"),
+
+                rs.getString("punch_state"));
 
     }
 
