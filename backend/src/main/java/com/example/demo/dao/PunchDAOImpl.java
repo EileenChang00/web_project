@@ -40,7 +40,7 @@ public class PunchDAOImpl implements PunchDAO {
 
       Connection conn = dataSource.getConnection();
 
-      String sql = "select punch_id, punch_in, punch_out, employee_id from punch";
+      String sql = "select punch_id, punch_in, punch_out, employee_id, punch_state from punch";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -74,8 +74,9 @@ public class PunchDAOImpl implements PunchDAO {
 
         rs.getTimestamp("punch_out"),
 
-        rs.getLong("employee_id"));
+        rs.getLong("employee_id"),
 
+        rs.getString("punch_state"));
   }
 
   public int insert(Punch punch) {
@@ -83,14 +84,14 @@ public class PunchDAOImpl implements PunchDAO {
     int result = 0;
     try {
       Connection conn = dataSource.getConnection();
-      String sql = "insert into punch (punch_id, punch_in, punch_out, employee_id) values(?, ?, ?, ?)";
+      String sql = "insert into punch (punch_in, punch_out, employee_id, punch_state) values(?, ?, ?, ?)";
 
       PreparedStatement stmt = conn.prepareStatement(sql);
 
-      stmt.setLong(1, punch.getPunch_id());
-      stmt.setTimestamp(2, punch.getPunch_in());
-      stmt.setTimestamp(3, punch.getPunch_out());
-      stmt.setLong(4, punch.getEmployee_id());
+      stmt.setTimestamp(1, punch.getPunch_in());
+      stmt.setTimestamp(2, punch.getPunch_out());
+      stmt.setLong(3, punch.getEmployee_id());
+      stmt.setString(4, punch.getPunch_state());
 
       result = stmt.executeUpdate();
 
@@ -129,7 +130,7 @@ public class PunchDAOImpl implements PunchDAO {
     try {
 
       Connection conn = dataSource.getConnection();
-      String sql = "select punch_id, punch_in, punch_out, employee_id from punch where employee_id = ?";
+      String sql = "select punch_id, punch_in, punch_out, employee_id, punch_state from punch where employee_id = ?";
       PreparedStatement stmt = conn.prepareStatement(sql);
 
       stmt.setLong(1, employee_id);

@@ -12,11 +12,13 @@ public class Punch {
 
     private Long employee_id;
 
+    private String punch_state;
+
     public Punch() {
 
     }
 
-    public Punch(Long punch_id, Timestamp punch_in, Timestamp punch_out, Long employee_id) {
+    public Punch(Long punch_id, Timestamp punch_in, Timestamp punch_out, Long employee_id, String punch_state) {
         this.punch_id = punch_id;
 
         this.punch_in = punch_in;
@@ -25,17 +27,13 @@ public class Punch {
 
         this.employee_id = employee_id;
 
+        this.punch_state = punch_state;
+
     }
 
     public Long getPunch_id() {
 
         return punch_id;
-
-    }
-
-    public void setPunch_id(Long punch_id) {
-
-        this.punch_id = punch_id;
 
     }
 
@@ -67,5 +65,17 @@ public class Punch {
 
     public void setEmployee_id(Long employee_id) {
         this.employee_id = employee_id;
+    }
+
+    public String getPunch_state() {
+
+        return punch_state;
+
+    }
+
+    public void setPunch_state(String punch_state) {
+
+        this.punch_state = punch_state;
+
     }
 }
